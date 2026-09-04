@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Abandoned Cart — Why people fill a food delivery basket and leave</title>
+<meta name="description" content="A mixed-methods HCI study of food delivery order abandonment: survey analysis with live statistics, eight interviews, five themes and the design implications that follow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Archivo:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================================
+   THE ABANDONED CART — Zoha Rizwan · identity 01
+   Type   : Libre Baskerville (display) + Archivo (UI) + Roboto Mono (figures)
+   Colour : bone paper, deep teal, coral, mustard
+   Mood   : data journalism — big numbers, full-bleed charts, editorial rules
+   ========================================================================== */
+
+:root{
+  --paper:#fdfbf6;
+  --paper-2:#f4efe4;
+  --card:#ffffff;
+  --ink:#171310;
+  --ink-2:#4a423b;
+  --ink-3:#847a70;
+  --rule:#ded5c4;
+  --teal:#0f4c4a;
+  --teal-2:#1c6e6a;
+  --coral:#e0523a;
+  --mustard:#dd9b2b;
+  --plum:#5b3a5e;
+  --serif:"Libre Baskerville",Georgia,"Times New Roman",serif;
+  --ui:"Archivo","Liberation Sans",Helvetica,Arial,sans-serif;
+  --mono:"Roboto Mono","DejaVu Sans Mono",Consolas,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:var(--serif);font-weight:700;line-height:1.18}
+p{margin:0 0 1em}
+a{color:var(--teal)}
+img{display:block;max-width:100%}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;background:var(--teal);color:#fff;padding:.8rem 1.2rem;z-index:300}
+.skip:focus{left:0;top:0}
+.wrap{width:min(1180px,100% - 3rem);margin-inline:auto}
+.narrow{width:min(760px,100% - 3rem);margin-inline:auto}
+.kicker{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--coral)}
+
+/* ---------------- bar ---------------- */
+.bar{position:sticky;top:0;z-index:60;background:var(--paper);border-bottom:2px solid var(--ink)}
+.bar-in{display:flex;align-items:center;gap:1.4rem;padding:.6rem 0;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--ink-2);flex-wrap:wrap}
+.bar nav{display:flex;gap:1rem;margin-left:auto;overflow-x:auto}
+.bar nav a{color:var(--ink-2);text-decoration:none;white-space:nowrap;padding-bottom:2px;border-bottom:2px solid transparent}
+.bar nav a:hover,.bar nav a.on{color:var(--teal);border-color:var(--coral)}
+.prog{height:3px;background:var(--coral);width:0}
+
+/* ---------------- masthead ---------------- */
+.mast{padding:4rem 0 2.5rem;position:relative;overflow:hidden}
+.mast-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:3rem;align-items:center}
+.mast h1{font-size:clamp(2.3rem,5.6vw,4.2rem);letter-spacing:-.02em;max-width:15ch}
+.mast h1 em{font-style:italic;color:var(--coral)}
+.stand{font-size:1.12rem;color:var(--ink-2);max-width:52ch;margin-top:1.3rem}
+.mast .ph{aspect-ratio:4/5;overflow:hidden;background:linear-gradient(140deg,#f0d9c8,#c99a76);border:1px solid var(--rule)}
+.mast .ph img{width:100%;height:100%;object-fit:cover}
+.credits{display:flex;gap:2.2rem;flex-wrap:wrap;margin-top:2.2rem;padding-top:1.2rem;border-top:2px solid var(--ink)}
+.credits div{font-family:var(--mono);font-size:.72rem}
+.credits dt{color:var(--ink-3);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.2rem}
+.credits dd{margin:0}
+
+.notice{border:2px solid var(--coral);background:#fff6f3;padding:1rem 1.2rem;margin-top:2rem;font-size:.92rem;color:var(--ink-2)}
+.notice b{color:var(--coral)}
+.tag{display:inline-block;background:var(--mustard);color:#2a1d05;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.05rem .4rem;border-radius:2px;vertical-align:.15em}
+
+/* ---------------- big numbers ---------------- */
+.bignums{background:var(--teal);color:#eaf3f2;padding:3rem 0;margin:2.5rem 0 0}
+.bignums-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem}
+.bn b{display:block;font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.6rem);color:#fff;line-height:1}
+.bn span{font-size:.82rem;color:#a7c6c3;display:block;margin-top:.3rem}
+
+/* ---------------- sections ---------------- */
+.sec{padding:3.5rem 0;border-top:1px solid var(--rule);scroll-margin-top:60px}
+.sec-n{display:flex;align-items:baseline;gap:1rem;margin-bottom:.6rem}
+.sec-n b{font-family:var(--mono);font-size:.7rem;color:var(--coral);letter-spacing:.14em}
+.sec h2{font-size:clamp(1.5rem,3.2vw,2.3rem);max-width:24ch}
+.lede{font-size:1.03rem;color:var(--ink-2);max-width:70ch}
+
+/* ---------------- data panel ---------------- */
+.datahead{display:flex;justify-content:space-between;align-items:flex-end;gap:1.5rem;flex-wrap:wrap;margin:1.6rem 0 1rem;padding-bottom:.8rem;border-bottom:2px solid var(--ink)}
+.srcbadge{font-family:var(--mono);font-size:.7rem;border:1px solid var(--rule);background:var(--card);padding:.35rem .7rem}
+.srcbadge.live{border-color:var(--teal);background:#eaf3f2;color:var(--teal)}
+.drop{border:2px dashed var(--rule);border-radius:10px;padding:1.1rem 1.2rem;background:var(--card);display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.drop.hot{border-color:var(--teal);background:#eaf3f2}
+.drop p{margin:0;font-size:.88rem;color:var(--ink-2)}
+.btn{border:2px solid var(--ink);background:var(--ink);color:var(--paper);padding:.6rem 1.2rem;font-family:var(--ui);font-weight:600;font-size:.85rem;cursor:pointer;border-radius:6px}
+.btn:hover{background:var(--teal);border-color:var(--teal)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--paper-2);color:var(--ink)}
+.btn.sm{padding:.4rem .8rem;font-size:.76rem}
+
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:1.4rem;margin-top:1.4rem}
+.chart{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:1.2rem 1.3rem}
+.chart h3{font-family:var(--ui);font-size:.92rem;font-weight:700;margin-bottom:.15rem}
+.chart .q{font-family:var(--mono);font-size:.66rem;color:var(--ink-3);margin-bottom:.9rem;display:block}
+.chart.wide{grid-column:1/-1}
+.brow{display:grid;grid-template-columns:150px 1fr 54px;gap:.7rem;align-items:center;margin-bottom:.45rem;font-size:.84rem}
+.brow .lab{color:var(--ink-2);overflow-wrap:anywhere}
+.btrack{background:var(--paper-2);border-radius:4px;height:22px;overflow:hidden}
+.btrack i{display:block;height:100%;border-radius:4px;transition:width .5s cubic-bezier(.2,.8,.3,1)}
+.brow .val{font-family:var(--mono);font-size:.78rem;text-align:right;color:var(--ink)}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;font-family:var(--mono);font-size:.68rem;color:var(--ink-3);margin-top:.6rem}
+.legend i{width:10px;height:10px;display:inline-block;border-radius:2px;margin-right:.35rem}
+
+.funnel{display:grid;gap:.4rem;margin-top:.4rem}
+.fstep{position:relative;background:var(--paper-2);border-radius:6px;overflow:hidden}
+.fstep i{display:block;height:100%;position:absolute;inset:0;background:var(--teal);opacity:.9;transition:width .5s}
+.fstep span{position:relative;display:flex;justify-content:space-between;gap:1rem;padding:.6rem .8rem;font-size:.86rem;z-index:2}
+.fstep span b{font-family:var(--mono);font-size:.8rem}
+.fstep.deep i{background:var(--coral)}
+.fstep.deep span{color:#fff}
+
+.donut{display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap}
+.donut svg{width:132px;height:132px;flex:none}
+.donut .k{font-size:.88rem}
+.donut .k b{display:block;font-family:var(--serif);font-size:1.7rem}
+
+.likert{display:flex;gap:.35rem;align-items:flex-end;height:120px;margin-top:.6rem}
+.likert div{flex:1;background:var(--mustard);border-radius:4px 4px 0 0;position:relative;transition:height .5s}
+.likert div span{position:absolute;bottom:-1.4rem;left:0;right:0;text-align:center;font-family:var(--mono);font-size:.68rem;color:var(--ink-3)}
+.likert div b{position:absolute;top:-1.3rem;left:0;right:0;text-align:center;font-family:var(--mono);font-size:.68rem}
+.likertwrap{padding-bottom:1.6rem}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-top:1rem}
+.stat{border:1px solid var(--rule);border-radius:8px;padding:.7rem .85rem;background:var(--card)}
+.stat b{display:block;font-family:var(--mono);font-size:1.15rem;color:var(--teal)}
+.stat span{font-size:.72rem;color:var(--ink-3)}
+
+table.x{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.76rem;margin-top:.6rem}
+table.x th,table.x td{border:1px solid var(--rule);padding:.45rem .55rem;text-align:center}
+table.x th{background:var(--paper-2);font-weight:500}
+table.x th:first-child,table.x td:first-child{text-align:left}
+table.x td.hi{background:#fde9e4;font-weight:500}
+.testline{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);margin-top:.7rem;background:var(--paper-2);border-left:3px solid var(--teal);padding:.6rem .8rem}
+
+/* ---------------- interviews / themes ---------------- */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem;margin-top:1.2rem}
+.pcard{border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:.8rem .9rem}
+.pcard b{font-family:var(--mono);font-size:.7rem;color:var(--coral);display:block}
+.pcard span{font-size:.84rem;color:var(--ink-2)}
+
+.theme{display:grid;grid-template-columns:70px 1fr;gap:1.4rem;padding:1.5rem 0;border-top:1px solid var(--rule)}
+.theme:first-of-type{border-top:0}
+.theme .tn{font-family:var(--serif);font-size:2.2rem;color:var(--coral);line-height:.9}
+.theme h3{font-size:1.25rem;margin-bottom:.35rem}
+.theme .ev{border-left:3px solid var(--mustard);padding-left:.9rem;margin:.8rem 0;font-style:italic;color:var(--ink-2)}
+.theme .ev span{display:block;font-style:normal;font-family:var(--mono);font-size:.66rem;color:var(--ink-3);margin-top:.25rem}
+.impl{background:#eaf3f2;border-radius:8px;padding:.8rem 1rem;font-size:.93rem}
+.impl b{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:.2rem}
+
+/* journey */
+.journey{border:1px solid var(--rule);background:var(--card);border-radius:10px;padding:1.2rem;overflow-x:auto;margin-top:1.2rem}
+.jin{min-width:820px}
+.jrow{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem}
+.jstage h4{font-family:var(--ui);font-size:.92rem;font-weight:700}
+.jstage p{font-size:.78rem;color:var(--ink-2);margin:.1rem 0 0}
+.jlab{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:1rem 0 .35rem}
+.jdrop{background:#fdeeea;border:1px solid #f3c8be;border-radius:6px;padding:.5rem .6rem;font-size:.78rem}
+.jfix{background:#eaf3f2;border:1px solid #bcd9d6;border-radius:6px;padding:.5rem .6rem;font-size:.78rem}
+
+.principles{list-style:none;padding:0;margin:1.2rem 0 0;display:grid;gap:.6rem}
+.principles li{display:grid;grid-template-columns:46px 1fr;gap:1rem;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:.9rem 1.1rem}
+.principles b{font-family:var(--mono);color:var(--coral)}
+
+.limits{list-style:none;padding:0;margin:1rem 0}
+.limits li{border-left:3px solid var(--rule);padding:.4rem 0 .4rem 1rem;margin-bottom:.7rem;color:var(--ink-2)}
+.limits b{color:var(--ink)}
+
+footer{background:var(--ink);color:#b8ada2;padding:2.5rem 0;font-family:var(--mono);font-size:.74rem;line-height:1.7}
+footer b{color:#fff;display:block;font-family:var(--serif);font-size:1.05rem;margin-bottom:.4rem}
+
+@media (max-width:900px){
+  .mast-grid{grid-template-columns:1fr}
+  .mast .ph{aspect-ratio:16/10;order:-1}
+  .theme{grid-template-columns:1fr;gap:.4rem}
+  .brow{grid-template-columns:110px 1fr 46px}
+}
+@media (max-width:640px){ .wrap,.narrow{width:min(1180px,100% - 1.5rem)} .bar nav{display:none} }
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#s2">Skip to the data</a>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <span><b>Zoha Rizwan</b> · HCI study 01</span>
+    <nav aria-label="Sections">
+      <a href="#s1">01 Question</a><a href="#s2">02 Survey</a><a href="#s3">03 Interviews</a>
+      <a href="#s4">04 Themes</a><a href="#s5">05 Journey</a><a href="#s6">06 Implications</a><a href="#s7">07 Limits</a>
+    </nav>
+  </div>
+  <div class="prog" id="prog"></div>
+</div>
+
+<header class="mast">
+  <div class="wrap mast-grid">
+    <div>
+      <p class="kicker">Mixed-methods HCI study · Dubai · 2026</p>
+      <h1>The abandoned cart: people build the order, then <em>walk away.</em></h1>
+      <p class="stand">Food delivery apps lose most of their carts, and the industry treats it as a pricing
+        problem. This study asks a different question — at what <em>moment</em> does the decision reverse, and
+        what did the interface do just before it?</p>
+      <dl class="credits">
+        <div><dt>Method</dt><dd>Survey + interviews</dd></div>
+        <div><dt>Analysis</dt><dd>Descriptive · χ² · Spearman ρ</dd></div>
+        <div><dt>Interviews</dt><dd>8 · semi-structured</dd></div>
+        <div><dt>Output</dt><dd>5 themes · 5 principles</dd></div>
+      </dl>
+    </div>
+    <div class="ph"><img id="mastImg" alt="Food delivery courier bag on a bicycle" loading="eager"></div>
+  </div>
+  <div class="wrap">
+    <div class="notice" id="dataNotice"></div>
+  </div>
+</header>
+
+<section class="bignums">
+  <div class="wrap bignums-in" id="bigNums"></div>
+</section>
+
+<main>
+
+<!-- §1 -->
+<section class="sec" id="s1">
+  <div class="wrap">
+    <div class="sec-n"><b>01</b><h2>The question, and why it is not a pricing question</h2></div>
+    <div class="narrow" style="margin:0">
+      <p class="lede">Abandonment is usually reported as a single number and explained by price. But a person
+        who abandons at the restaurant list has met a different problem from a person who abandons on the
+        payment screen — and only one of those is about money.</p>
+      <p>I came to this from psychology rather than design. My undergraduate thesis was a quantitative study
+        of rumination and life satisfaction, so my instinct is to measure first: get a distribution, find where
+        it clusters, then go and ask people what was happening at that point.</p>
+      <h3 style="font-size:1.05rem;margin:1.4rem 0 .5rem">Research questions</h3>
+      <ol style="font-family:var(--mono);font-size:.86rem;padding-left:1.2rem;color:var(--ink-2)">
+        <li style="margin-bottom:.4rem"><b style="color:var(--coral)">RQ1</b> — How common is order abandonment, and at which stage does it concentrate?</li>
+        <li style="margin-bottom:.4rem"><b style="color:var(--coral)">RQ2</b> — Which reasons dominate, and do they differ by how often someone orders?</li>
+        <li style="margin-bottom:.4rem"><b style="color:var(--coral)">RQ3</b> — How much weight does delivery time carry relative to price?</li>
+        <li><b style="color:var(--coral)">RQ4</b> — What would have to change in the interface for the order to be completed?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- §2 survey -->
+<section class="sec" id="s2">
+  <div class="wrap">
+    <div class="sec-n"><b>02</b><h2>Survey — the distribution, and where it concentrates</h2></div>
+    <p class="lede">Seven questions, two to three minutes, distributed to food-delivery users. Every figure below
+      is computed in your browser from the data set named in the badge. Drop the real CSV export in and the whole
+      page recalculates.</p>
+
+    <div class="datahead">
+      <div>
+        <span class="srcbadge" id="srcBadge">Sample data</span>
+        <span class="kicker" style="margin-left:.6rem" id="nBadge"></span>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn ghost sm" id="resetData">Use sample data</button>
+        <button class="btn sm" id="pickBtn">Load survey CSV</button>
+        <input type="file" id="fileIn" accept=".csv,text/csv" class="sr">
+      </div>
+    </div>
+
+    <div class="drop" id="dropZone">
+      <p><b>Drop the Google Forms CSV here</b> — <em>Responses → Download responses (.csv)</em>. Column headings are
+        matched by keyword, so the export works as it comes out of Google. Nothing is uploaded anywhere; the file is
+        parsed in this browser only.</p>
+      <span class="kicker" id="dropMsg"></span>
+    </div>
+
+    <div class="charts" id="charts"></div>
+  </div>
+</section>
+
+<!-- §3 interviews -->
+<section class="sec" id="s3">
+  <div class="wrap">
+    <div class="sec-n"><b>03</b><h2>Interviews — eight people, one question each time: what happened just before you left?</h2></div>
+    <p class="lede">The survey says <em>where</em>. Interviews say <em>why</em>. Each one starts from a real recent
+      abandoned order rather than a hypothetical, because people reconstruct hypotheticals to sound rational.</p>
+    <div class="pgrid" id="participants"></div>
+    <details style="margin-top:1.2rem;border:1px solid var(--rule);background:var(--card);border-radius:8px;padding:.9rem 1.2rem">
+      <summary style="cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--teal)">▸ The interview guide (11 questions)</summary>
+      <ol style="margin:.9rem 0 0;padding-left:1.3rem;font-size:.95rem;color:var(--ink-2)">
+        <li>Tell me about the last time you ordered food through a delivery app.</li>
+        <li>Have you ever added food to your cart but decided not to order?</li>
+        <li>At what stage did you decide to leave?</li>
+        <li>What was the main reason you abandoned the order?</li>
+        <li>How important is delivery time when deciding whether to order?</li>
+        <li>How do delivery charges or the final price affect your decision?</li>
+        <li>Do you compare the same restaurant across different apps?</li>
+        <li>Have you ever abandoned an order because of minimum-order requirements?</li>
+        <li>Have payment or checkout issues ever stopped you?</li>
+        <li>What information would you want to see earlier?</li>
+        <li>What would make you more likely to complete an order?</li>
+      </ol>
+    </details>
+  </div>
+</section>
+
+<!-- §4 themes -->
+<section class="sec" id="s4">
+  <div class="wrap">
+    <div class="sec-n"><b>04</b><h2>Five themes, each with what it demands of the interface</h2></div>
+    <div id="themes"></div>
+  </div>
+</section>
+
+<!-- §5 journey -->
+<section class="sec" id="s5">
+  <div class="wrap">
+    <div class="sec-n"><b>05</b><h2>Where the order dies</h2></div>
+    <p class="lede">The survey locates the drop-offs; the interviews explain each one. Read the row of red boxes as
+      the sequence of moments where an interface reversed a decision the user had already made.</p>
+    <div class="journey"><div class="jin" id="journey"></div></div>
+  </div>
+</section>
+
+<!-- §6 implications -->
+<section class="sec" id="s6">
+  <div class="wrap">
+    <div class="sec-n"><b>06</b><h2>Five design principles</h2></div>
+    <ol class="principles">
+      <li><b>P1</b><div><b style="font-family:var(--ui);color:var(--ink)">Show the true total before the cart is built.</b> The number that reverses the decision is the one revealed last. Estimate it from the first tap.</div></li>
+      <li><b>P2</b><div><b style="font-family:var(--ui);color:var(--ink)">Commit to one delivery estimate.</b> A range that narrows unfavourably at checkout destroys the trust that got the user there.</div></li>
+      <li><b>P3</b><div><b style="font-family:var(--ui);color:var(--ink)">Surface every gate at the entrance.</b> Minimum order, unavailable payment methods and closing time are conditions of entry, not surprises for checkout.</div></li>
+      <li><b>P4</b><div><b style="font-family:var(--ui);color:var(--ink)">Make comparison cheap inside the app.</b> People already compare across apps; the only question is whether you make them leave to do it.</div></li>
+      <li><b>P5</b><div><b style="font-family:var(--ui);color:var(--ink)">Treat an abandoned cart as unfinished, not failed.</b> Hold it, and say what changed when they return.</div></li>
+    </ol>
+    <p style="margin-top:1.4rem;font-size:.94rem;color:var(--ink-2)">These five became the brief for
+      <b>Plate</b>, the delivery-app concept in the next project, and were then tested in
+      <b>Measuring It</b>, the evaluation study.</p>
+  </div>
+</section>
+
+<!-- §7 limits -->
+<section class="sec" id="s7">
+  <div class="wrap narrow" style="margin:0">
+    <div class="sec-n"><b>07</b><h2>Limits, stated before anyone asks</h2></div>
+    <ul class="limits">
+      <li><b>Self-report measures intention, not behaviour.</b> Asking people why they abandoned a cart gets the
+        reason they can articulate. Log data or a think-aloud with the app open would get the reason they acted on.</li>
+      <li><b>Convenience sampling.</b> The respondents are reachable through my own networks in Dubai and
+        Pakistan, which skews age, income and app mix. Any percentage here describes this sample, not a population.</li>
+      <li><b>Single-item measures.</b> Delivery-time importance is one Likert item, so it has no reliability
+        estimate. A multi-item scale would let me report Cronbach's α — which my thesis work did, and this does not.</li>
+      <li><b>Recall bias.</b> Retrospective accounts of an abandoned order are reconstructions. The interview
+        protocol reduces this by anchoring on the most recent real session, but it does not remove it.</li>
+      <li><b>Statistical tests are exploratory.</b> With this sample size the χ² and correlation results below are
+        descriptive signposts for design, not confirmatory findings. No p-value here should be read as proof.</li>
+    </ul>
+    <h3 style="font-size:1.1rem;margin:1.6rem 0 .4rem">What I would do next</h3>
+    <p style="color:var(--ink-2)">Run the same instrument on a stratified sample, add a validated multi-item scale
+      for price sensitivity, and pair it with observed sessions so that stated reasons can be checked against
+      behaviour. Then the funnel below stops being a description and starts being a hypothesis I can test —
+      which is what <b>Measuring It</b> sets out to do.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>The Abandoned Cart</b>
+    <p>Zoha Rizwan · Self-initiated HCI study, 2026 · Analysis computed in-browser · Photography from Unsplash<br>
+      Participant identities are not recorded. Responses are reported in aggregate.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const IMG=(id,w=900)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`;
+const pct=(n,d)=>d?Math.round(n/d*1000)/10:0;
+
+/* ============================================================================
+   1. SURVEY SCHEMA — matches the live Google Form question by question.
+      Columns are matched on keywords so the raw Google export works unmodified.
+   ========================================================================== */
+const SCHEMA=[
+ {k:'freq',   match:['how often'],                     type:'single', title:'How often do you use food delivery apps?',
+  levels:['Daily','A few times a week','A few times a month','Rarely','Never'], colour:'#0f4c4a'},
+ {k:'apps',   match:['which food delivery','apps do you usually'], type:'multi', title:'Which apps do you usually use?',
+  levels:['Talabat','Deliveroo','Careem / noon','Zomato','Uber Eats','Restaurant’s own app','Other'], colour:'#5b3a5e'},
+ {k:'aband',  match:['added food to cart','left the app'], type:'single', title:'Ever added food to cart and left without ordering?',
+  levels:['Yes','No'], colour:'#e0523a'},
+ {k:'stage',  match:['at what stage','decide not to complete'], type:'single', title:'At what stage do you decide not to complete?',
+  levels:['Browsing restaurants','Building the cart','Viewing the cart total','At checkout / payment','After placing it'], colour:'#0f4c4a'},
+ {k:'reason', match:['main reasons','reasons you have abandoned'], type:'multi', title:'Main reasons for abandoning an order',
+  levels:['Total price too high','Delivery fee / service charges','Delivery time too long','Minimum order not met',
+          'Payment method unavailable','Found a better option elsewhere','Just browsing, not serious','Restaurant closed / unavailable'], colour:'#e0523a'},
+ {k:'time',   match:['how important is delivery time'], type:'likert', title:'How important is delivery time?',
+  levels:['1','2','3','4','5'], colour:'#dd9b2b'},
+ {k:'story',  match:['last time you abandoned','what happened'], type:'text', title:'Last time you abandoned an order — what happened?'}
+];
+
+/* ============================================================================
+   2. SAMPLE DATA — clearly labelled. Replace by loading the real CSV.
+      Generated once from a fixed seed so the figures never move between visits.
+   ========================================================================== */
+function seeded(seed){ let s=seed; return ()=>{ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; }; }
+function makeSample(n){
+  const r=seeded(20260901), rows=[];
+  const pick=(arr,w)=>{const t=w.reduce((a,b)=>a+b,0);let x=r()*t;for(let i=0;i<arr.length;i++){x-=w[i];if(x<=0)return arr[i];}return arr[0];};
+  for(let i=0;i<n;i++){
+    const freq=pick(SCHEMA[0].levels,[6,20,16,9,1]);
+    const heavy=freq==='Daily'||freq==='A few times a week';
+    const aband=pick(['Yes','No'],[9,1]);
+    const stage=aband==='No'?'':pick(SCHEMA[3].levels, heavy?[2,3,7,9,1]:[3,4,6,6,1]);
+    const rs=[];
+    const rw=heavy?[9,8,7,4,2,6,3,2]:[8,7,5,5,3,4,4,2];
+    SCHEMA[4].levels.forEach((lv,j)=>{ if(r()<rw[j]/14) rs.push(lv); });
+    if(!rs.length) rs.push('Total price too high');
+    const apps=[]; const aw=[9,6,5,3,2,4,1];
+    SCHEMA[1].levels.forEach((lv,j)=>{ if(r()<aw[j]/12) apps.push(lv); });
+    if(!apps.length) apps.push('Talabat');
+    const time=pick(['1','2','3','4','5'], heavy?[1,2,7,14,18]:[2,3,9,12,10]);
+    rows.push({freq,apps,aband,stage,reason:rs,time,story:''});
+  }
+  return rows;
+}
+
+let DATA={rows:makeSample(52), source:'sample'};
+
+/* ============================================================================
+   3. CSV PARSING — handles quoted fields, commas and newlines inside answers.
+   ========================================================================== */
+function parseCSV(text){
+  const rows=[]; let row=[], cur='', q=false;
+  text=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){
+      if(c==='"'&&text[i+1]==='"'){cur+='"';i++;}
+      else if(c==='"'){q=false;}
+      else cur+=c;
+    }else{
+      if(c==='"')q=true;
+      else if(c===','){row.push(cur);cur='';}
+      else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur='';}
+      else cur+=c;
+    }
+  }
+  if(cur||row.length){row.push(cur);rows.push(row);}
+  return rows.filter(r=>r.some(c=>c.trim()!==''));
+}
+function mapColumns(header){
+  const map={};
+  SCHEMA.forEach(q=>{
+    const idx=header.findIndex(h=>{
+      const l=h.toLowerCase();
+      return q.match.some(m=>l.includes(m));
+    });
+    if(idx>-1) map[q.k]=idx;
+  });
+  return map;
+}
+function normLevel(val,levels){
+  const v=val.trim().toLowerCase();
+  let best=null,score=0;
+  levels.forEach(l=>{
+    const a=l.toLowerCase();
+    if(a===v){best=l;score=99;}
+    else if(score<2&&(v.includes(a)||a.includes(v))&&v.length>2){best=l;score=2;}
+  });
+  return best||val.trim();
+}
+function ingest(text){
+  const rows=parseCSV(text);
+  if(rows.length<2) throw new Error('The file has no data rows.');
+  const header=rows[0], map=mapColumns(header);
+  const found=Object.keys(map).length;
+  if(found<3) throw new Error('Could not match the columns. Is this the Google Forms export for this survey?');
+  const out=rows.slice(1).map(r=>{
+    const g=k=>map[k]!==undefined?(r[map[k]]||''):'';
+    const split=s=>s.split(/[;,]\s*(?![^(]*\))/).map(x=>x.trim()).filter(Boolean);
+    return {
+      freq:  map.freq!==undefined ? normLevel(g('freq'),SCHEMA[0].levels):'',
+      apps:  map.apps!==undefined ? split(g('apps')).map(x=>normLevel(x,SCHEMA[1].levels)):[],
+      aband: map.aband!==undefined? normLevel(g('aband'),['Yes','No']):'',
+      stage: map.stage!==undefined? normLevel(g('stage'),SCHEMA[3].levels):'',
+      reason:map.reason!==undefined?split(g('reason')).map(x=>normLevel(x,SCHEMA[4].levels)):[],
+      time:  map.time!==undefined ? (g('time').match(/[1-5]/)||[''])[0]:'',
+      story: map.story!==undefined ? g('story'):''
+    };
+  }).filter(r=>r.freq||r.aband||r.stage);
+  if(!out.length) throw new Error('No usable rows were found.');
+  return {rows:out, source:'real', matched:found};
+}
+
+/* ============================================================================
+   4. STATISTICS — computed here, not typed in.
+   ========================================================================== */
+const countSingle=(rows,k)=>rows.reduce((m,r)=>{const v=r[k];if(v)m[v]=(m[v]||0)+1;return m;},{});
+const countMulti =(rows,k)=>rows.reduce((m,r)=>{(r[k]||[]).forEach(v=>{if(v)m[v]=(m[v]||0)+1;});return m;},{});
+
+function mean(a){return a.reduce((x,y)=>x+y,0)/(a.length||1);}
+function sd(a){const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/((a.length-1)||1));}
+function median(a){const s=a.slice().sort((x,y)=>x-y);const n=s.length;return n?(n%2?s[(n-1)/2]:(s[n/2-1]+s[n/2])/2):0;}
+
+/* Pearson χ² test of independence on a contingency table */
+function chiSquare(tab){
+  const rowsN=tab.map(r=>r.reduce((a,b)=>a+b,0));
+  const colsN=tab[0].map((_,j)=>tab.reduce((a,r)=>a+r[j],0));
+  const N=rowsN.reduce((a,b)=>a+b,0);
+  let x2=0, cells=0;
+  tab.forEach((r,i)=>r.forEach((o,j)=>{
+    const e=rowsN[i]*colsN[j]/(N||1);
+    if(e>0){ x2+=(o-e)**2/e; cells++; }
+  }));
+  const df=(tab.length-1)*(tab[0].length-1);
+  return {x2, df, N, p:chiP(x2,df)};
+}
+/* upper-tail p for χ² — series expansion, adequate for reporting */
+function chiP(x,df){
+  if(df<=0||x<=0) return 1;
+  if(df%2===0){
+    let s=0, t=Math.exp(-x/2);
+    for(let i=0;i<df/2;i++){ s+=t; t*=x/(2*(i+1)); }
+    return Math.min(1,s);
+  }
+  const z=Math.sqrt(x);
+  let s=2*(1-normCdf(z)), t=Math.exp(-x/2)*z*Math.sqrt(2/Math.PI);
+  for(let i=1;i<(df-1)/2+1;i++){ s+=t; t*=x/(2*i+1); }
+  return Math.min(1,Math.max(0,s));
+}
+function normCdf(z){
+  const t=1/(1+0.2316419*Math.abs(z));
+  const d=0.3989423*Math.exp(-z*z/2);
+  let p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+  return z>0?1-p:p;
+}
+/* Spearman rank correlation */
+function spearman(x,y){
+  const n=x.length; if(n<3) return {rho:0,n};
+  const rank=a=>{const s=a.map((v,i)=>[v,i]).sort((p,q)=>p[0]-q[0]);const r=new Array(n);
+    let i=0; while(i<n){let j=i; while(j+1<n&&s[j+1][0]===s[i][0])j++;
+      const avg=(i+j)/2+1; for(let k=i;k<=j;k++) r[s[k][1]]=avg; i=j+1;} return r;};
+  const rx=rank(x), ry=rank(y);
+  const mx=mean(rx), my=mean(ry);
+  let num=0,dx=0,dy=0;
+  for(let i=0;i<n;i++){num+=(rx[i]-mx)*(ry[i]-my);dx+=(rx[i]-mx)**2;dy+=(ry[i]-my)**2;}
+  return {rho:num/Math.sqrt(dx*dy||1), n};
+}
+const fmtP=p=>p<0.001?'p < .001':'p = '+p.toFixed(3).replace(/^0/,'');
+
+/* ============================================================================
+   5. RENDERING
+   ========================================================================== */
+function bars(counts,levels,total,colour,unit){
+  const keys=levels?levels.filter(l=>counts[l]):Object.keys(counts).sort((a,b)=>counts[b]-counts[a]);
+  const max=Math.max(...keys.map(k=>counts[k]||0),1);
+  return keys.map(k=>`<div class="brow">
+    <span class="lab">${k}</span>
+    <span class="btrack"><i style="width:${(counts[k]/max*100).toFixed(1)}%;background:${colour}"></i></span>
+    <span class="val">${counts[k]} · ${pct(counts[k],total)}%</span></div>`).join('')
+    || `<p style="color:var(--ink-3);font-size:.86rem">No responses for this question.</p>`;
+}
+
+function render(){
+  const rows=DATA.rows, n=rows.length;
+  const real=DATA.source==='real';
+  $('#srcBadge').textContent = real?'Real survey responses':'Sample data — not real responses';
+  $('#srcBadge').className = 'srcbadge'+(real?' live':'');
+  $('#nBadge').textContent = `n = ${n}`;
+  $('#dataNotice').innerHTML = real
+    ? `<b>Live data.</b> Every figure on this page is computed from ${n} responses loaded from the survey export in
+       this browser. Nothing is uploaded anywhere. Participant identities are not recorded and results are reported
+       in aggregate only.`
+    : `<b>Reading this with sample data.</b> The figures below come from a fixed, generated data set of 52 responses
+       used to build and demonstrate the analysis — <span class="tag">not real responses</span>. Load the real CSV
+       with the button in section 02 and every number, chart and statistical test on this page recomputes from it.`;
+
+  /* --- headline numbers --- */
+  const ab=countSingle(rows,'aband');
+  const stageC=countSingle(rows.filter(r=>r.aband==='Yes'),'stage');
+  const reasonC=countMulti(rows,'reason');
+  const topReason=Object.keys(reasonC).sort((a,b)=>reasonC[b]-reasonC[a])[0]||'—';
+  const lateStages=['Viewing the cart total','At checkout / payment'];
+  const lateN=lateStages.reduce((a,s)=>a+(stageC[s]||0),0);
+  const stageTotal=Object.values(stageC).reduce((a,b)=>a+b,0);
+  const times=rows.map(r=>+r.time).filter(v=>v>=1&&v<=5);
+
+  $('#bigNums').innerHTML=`
+    <div class="bn"><b>${pct(ab['Yes']||0,n)}%</b><span>have abandoned an order after filling the cart</span></div>
+    <div class="bn"><b>${pct(lateN,stageTotal)}%</b><span>of those abandon at the cart total or later — after the work is done</span></div>
+    <div class="bn"><b>${mean(times).toFixed(2)}</b><span>mean importance of delivery time (1–5)</span></div>
+    <div class="bn" style="max-width:26ch"><b style="font-size:1.5rem;font-family:var(--ui);letter-spacing:-.01em">${topReason}</b><span>most-selected reason</span></div>`;
+
+  /* --- charts --- */
+  const C=[];
+
+  C.push(`<div class="chart"><h3>${SCHEMA[0].title}</h3><span class="q">Single choice · n = ${n}</span>
+    ${bars(countSingle(rows,'freq'),SCHEMA[0].levels,n,SCHEMA[0].colour)}</div>`);
+
+  const appsC=countMulti(rows,'apps');
+  const appResp=rows.filter(r=>r.apps&&r.apps.length).length;
+  C.push(`<div class="chart"><h3>${SCHEMA[1].title}</h3><span class="q">Multiple choice · % of ${appResp} respondents</span>
+    ${bars(appsC,SCHEMA[1].levels,appResp,SCHEMA[1].colour)}</div>`);
+
+  /* donut */
+  const yes=ab['Yes']||0, no=ab['No']||0, tot=yes+no||1;
+  const circ=2*Math.PI*54, on=circ*yes/tot;
+  C.push(`<div class="chart"><h3>${SCHEMA[2].title}</h3><span class="q">Single choice · n = ${tot}</span>
+    <div class="donut">
+      <svg viewBox="0 0 132 132" role="img" aria-label="${pct(yes,tot)} percent yes">
+        <circle cx="66" cy="66" r="54" fill="none" stroke="#f4efe4" stroke-width="20"/>
+        <circle cx="66" cy="66" r="54" fill="none" stroke="#e0523a" stroke-width="20"
+          stroke-dasharray="${on} ${circ-on}" transform="rotate(-90 66 66)"/>
+      </svg>
+      <div class="k"><b>${pct(yes,tot)}%</b>answered <b style="display:inline;font-size:1rem">Yes</b> — ${yes} of ${tot}.
+        <br><span style="color:var(--ink-3);font-size:.8rem">${no} said no</span></div>
+    </div></div>`);
+
+  /* funnel */
+  const maxStage=Math.max(...Object.values(stageC),1);
+  C.push(`<div class="chart wide"><h3>${SCHEMA[3].title}</h3>
+    <span class="q">Asked of everyone who has abandoned an order · n = ${stageTotal} · read top to bottom as the order of the journey</span>
+    <div class="funnel">${SCHEMA[3].levels.map(l=>{
+      const v=stageC[l]||0, deep=lateStages.includes(l);
+      return `<div class="fstep ${deep?'deep':''}"><i style="width:${(v/maxStage*100).toFixed(1)}%"></i>
+        <span>${l}<b>${v} · ${pct(v,stageTotal)}%</b></span></div>`;
+    }).join('')}</div>
+    <p style="font-size:.86rem;color:var(--ink-2);margin:.9rem 0 0">The two coral bars are the expensive ones: the
+      person has already chosen a restaurant, built a basket and spent the effort. Everything reversed at that point
+      was reversed by information the interface held back.</p></div>`);
+
+  const rTotal=rows.filter(r=>r.reason&&r.reason.length).length;
+  C.push(`<div class="chart wide"><h3>${SCHEMA[4].title}</h3><span class="q">Multiple choice · % of ${rTotal} respondents who answered</span>
+    ${bars(reasonC,SCHEMA[4].levels,rTotal,SCHEMA[4].colour)}</div>`);
+
+  /* likert */
+  const tC=countSingle(rows,'time'); const tMax=Math.max(...['1','2','3','4','5'].map(k=>tC[k]||0),1);
+  C.push(`<div class="chart"><h3>${SCHEMA[5].title}</h3><span class="q">1 = not important at all · 5 = extremely important</span>
+    <div class="likertwrap"><div class="likert">
+      ${['1','2','3','4','5'].map(k=>`<div style="height:${((tC[k]||0)/tMax*100).toFixed(1)}%"><b>${tC[k]||0}</b><span>${k}</span></div>`).join('')}
+    </div></div>
+    <div class="stats">
+      <div class="stat"><b>${mean(times).toFixed(2)}</b><span>Mean</span></div>
+      <div class="stat"><b>${median(times).toFixed(1)}</b><span>Median</span></div>
+      <div class="stat"><b>${sd(times).toFixed(2)}</b><span>SD</span></div>
+      <div class="stat"><b>${times.filter(v=>v>=4).length} <span style="font-family:var(--ui);font-size:.7rem;color:var(--ink-3)">(${pct(times.filter(v=>v>=4).length,times.length)}%)</span></b><span>rated 4 or 5</span></div>
+    </div></div>`);
+
+  /* cross-tab: frequency × stage, with χ² */
+  const fLev=SCHEMA[0].levels.filter(l=>rows.some(r=>r.freq===l));
+  const sLev=SCHEMA[3].levels.filter(l=>rows.some(r=>r.stage===l));
+  const tab=fLev.map(f=>sLev.map(s=>rows.filter(r=>r.freq===f&&r.stage===s).length));
+  const chi=chiSquare(tab.length&&tab[0].length?tab:[[0]]);
+  const rowMax=tab.map(r=>Math.max(...r,0));
+  C.push(`<div class="chart wide"><h3>Cross-tabulation — ordering frequency × stage of abandonment</h3>
+    <span class="q">Counts · χ² test of independence</span>
+    <div style="overflow-x:auto"><table class="x">
+      <thead><tr><th>Frequency ↓ / Stage →</th>${sLev.map(s=>`<th>${s}</th>`).join('')}<th>Row n</th></tr></thead>
+      <tbody>${fLev.map((f,i)=>`<tr><th>${f}</th>${tab[i].map(v=>
+        `<td class="${v===rowMax[i]&&v>0?'hi':''}">${v}</td>`).join('')}<th>${tab[i].reduce((a,b)=>a+b,0)}</th></tr>`).join('')}</tbody>
+    </table></div>
+    <p class="testline">χ²(${chi.df}, N = ${chi.N}) = ${chi.x2.toFixed(2)}, ${fmtP(chi.p)} —
+      ${chi.p<0.05
+        ? 'the stage at which people abandon is <b>not independent</b> of how often they order in this sample.'
+        : 'no significant association in this sample; the stage pattern looks similar across ordering frequencies.'}
+      With a sample this size and several sparse cells this is a signpost for design, not a confirmatory result.</p></div>`);
+
+  /* correlation: frequency (ordinal) × delivery-time importance */
+  const fOrder={'Daily':5,'A few times a week':4,'A few times a month':3,'Rarely':2,'Never':1};
+  const pairs=rows.filter(r=>fOrder[r.freq]&&+r.time>=1).map(r=>[fOrder[r.freq],+r.time]);
+  const sp=spearman(pairs.map(p=>p[0]),pairs.map(p=>p[1]));
+  C.push(`<div class="chart"><h3>Do frequent orderers care more about delivery time?</h3>
+    <span class="q">Spearman rank correlation · ordering frequency × importance of delivery time</span>
+    <div class="stats">
+      <div class="stat"><b>ρ = ${sp.rho.toFixed(2)}</b><span>Spearman's rho</span></div>
+      <div class="stat"><b>n = ${sp.n}</b><span>Pairs</span></div>
+      <div class="stat"><b>${Math.abs(sp.rho)<0.1?'None':Math.abs(sp.rho)<0.3?'Weak':Math.abs(sp.rho)<0.5?'Moderate':'Strong'}</b><span>Effect size (Cohen)</span></div>
+    </div>
+    <p class="testline">Both variables are ordinal, so Spearman rather than Pearson. ${
+      Math.abs(sp.rho)<0.1?'There is essentially no monotonic relationship here — delivery time matters to light and heavy users alike, which is itself a finding: it is not a niche concern.'
+      : sp.rho>0?'Heavier users tend to rate delivery time slightly higher.'
+      :'Lighter users tend to rate delivery time slightly higher.'}</p></div>`);
+
+  /* free text */
+  const stories=rows.map(r=>(r.story||'').trim()).filter(s=>s.length>12);
+  if(stories.length){
+    C.push(`<div class="chart wide"><h3>Open responses — “what happened last time?”</h3>
+      <span class="q">${stories.length} written answers · coded by hand into the themes in section 04</span>
+      ${stories.slice(0,6).map(s=>`<p style="border-left:3px solid var(--mustard);padding-left:.9rem;font-style:italic;color:var(--ink-2);font-size:.92rem">“${s.replace(/</g,'&lt;')}”</p>`).join('')}
+      ${stories.length>6?`<p style="font-family:var(--mono);font-size:.74rem;color:var(--ink-3)">+ ${stories.length-6} more in the export</p>`:''}</div>`);
+  }
+
+  $('#charts').innerHTML=C.join('');
+}
+
+/* ---------------- interviews, themes, journey ---------------- */
+const PARTS=[
+ ['P01','Frequent user','Left at checkout — total higher than expected once delivery and service charges appeared'],
+ ['P02','Occasional user','Left after seeing a delivery estimate of almost an hour'],
+ ['P03','Price-conscious','Chose a discounted meal, then the extra charges removed the discount'],
+ ['P04','Multi-app user','Checked a second app mid-order and found better value'],
+ ['P05','Frequent user','The delivery estimate changed after the cart was built — lost confidence'],
+ ['P06','Occasional user','Hit a minimum-order requirement only near checkout'],
+ ['P07','Convenience-oriented','Preferred payment method was unavailable at the payment step'],
+ ['P08','Frequent user','Built the cart only to see the final price, then judged it poor value']
+];
+const THEMES=[
+ {n:'01',t:'The true price arrives last, and reverses the decision',
+  b:'Menu prices set the expectation; delivery fees, service charges and taxes arrive at checkout and break it. The user is not price-sensitive in the abstract — they are sensitive to a number that changed after they committed.',
+  q:['The total price was higher than I expected because of delivery and service charges.','P01, P03, P08'],
+  i:'Estimate and display the true total from the first tap on a restaurant, not at the last step. A number that only ever goes up is a trust problem, not a pricing problem.'},
+ {n:'02',t:'A delivery estimate that moves is worse than a slow one',
+  b:'Participants tolerated long delivery times when they were told early. What they did not tolerate was an estimate that widened or slipped after the cart was built.',
+  q:['It made me lose confidence that the order would arrive when expected.','P05, supported by P02'],
+  i:'Commit to one estimate, show its confidence, and never revise it upward silently after the user has invested effort.'},
+ {n:'03',t:'Gates are discovered at the worst possible moment',
+  b:'Minimum-order values, unavailable payment methods and closing times are conditions of entry, but they are revealed at checkout — after the cart exists.',
+  q:['I did not want to add more food just to meet the minimum.','P06, P07'],
+  i:'Surface every gate on the restaurant card, before the first item is added. A condition disclosed late reads as a trick.'},
+ {n:'04',t:'Comparison happens across apps because it is impossible inside one',
+  b:'Users already run two or three apps side by side to compare the same restaurant. The app is not competing on food at that moment; it is competing on how cheap it makes comparison.',
+  q:['I often check more than one app if the price or delivery fee might be different.','P04, P08'],
+  i:'Make in-app comparison of total cost, fee and time cheap and visible, or accept that the comparison happens somewhere you cannot see.'},
+ {n:'05',t:'The abandoned cart is treated as a failure, not as an unfinished decision',
+  b:'People leave intending to come back. Nothing holds the state, nothing tells them what changed, and the decision has to be rebuilt from scratch next time.',
+  q:['I added food to see the final price, then decided it was not worth the total cost.','P08, P03'],
+  i:'Keep the cart, and on return say what has changed — price, fee, delivery time, availability. Treat it as a saved decision.'}
+];
+const JOURNEY=[
+ {s:'Open the app',w:'Hungry, no specific restaurant in mind',drop:'Nothing yet — expectations are set by menu prices',fix:'Show delivery fee and minimum on the restaurant card'},
+ {s:'Choose a restaurant',w:'Filters by cuisine, rating, promoted offers',drop:'Discount framing sets an expectation the total will break',fix:'Show the true total estimate beside the offer'},
+ {s:'Build the cart',w:'Adds items, checks the running subtotal',drop:'Minimum-order requirement discovered here',fix:'Gate surfaced before the first item'},
+ {s:'View the total',w:'Fees, service charge and tax appear',drop:'Largest single drop-off — the number changed',fix:'No new line items after this point'},
+ {s:'Checkout / pay',w:'Chooses payment, confirms address and time',drop:'Payment method unavailable; estimate slips',fix:'Payment options and a committed ETA shown earlier'}
+];
+function drawParts(){
+  $('#participants').innerHTML=PARTS.map(([id,p,w])=>
+    `<div class="pcard"><b>${id} · ${p}</b><span>${w}</span></div>`).join('');
+}
+function drawThemes(){
+  $('#themes').innerHTML=THEMES.map(t=>`<div class="theme">
+    <div class="tn">${t.n}</div>
+    <div><h3>${t.t}</h3><p style="color:var(--ink-2)">${t.b}</p>
+      <blockquote class="ev">“${t.q[0]}”<span>${t.q[1]}</span></blockquote>
+      <div class="impl"><b>Design implication</b>${t.i}</div></div></div>`).join('');
+}
+function drawJourney(){
+  $('#journey').innerHTML=`
+    <div class="jrow">${JOURNEY.map(j=>`<div class="jstage"><h4>${j.s}</h4><p>${j.w}</p></div>`).join('')}</div>
+    <p class="jlab">Where it breaks</p>
+    <div class="jrow">${JOURNEY.map(j=>`<div class="jdrop">${j.drop}</div>`).join('')}</div>
+    <p class="jlab">What the interface should do instead</p>
+    <div class="jrow">${JOURNEY.map(j=>`<div class="jfix">${j.fix}</div>`).join('')}</div>`;
+}
+
+/* ---------------- data loading UI ---------------- */
+function loadFile(file){
+  const msg=$('#dropMsg');
+  if(!file){ return; }
+  if(!/\.csv$/i.test(file.name)&&file.type!=='text/csv'){ msg.textContent='That is not a .csv file.'; return; }
+  const fr=new FileReader();
+  fr.onload=()=>{
+    try{
+      DATA=ingest(String(fr.result));
+      msg.textContent=`Loaded ${DATA.rows.length} responses · ${DATA.matched} of ${SCHEMA.length} columns matched`;
+      render();
+      $('#s2').scrollIntoView({behavior:'smooth'});
+    }catch(e){ msg.textContent=e.message; }
+  };
+  fr.onerror=()=>{ msg.textContent='The file could not be read.'; };
+  fr.readAsText(file);
+}
+function bindData(){
+  $('#pickBtn').addEventListener('click',()=>$('#fileIn').click());
+  $('#fileIn').addEventListener('change',e=>loadFile(e.target.files[0]));
+  $('#resetData').addEventListener('click',()=>{ DATA={rows:makeSample(52),source:'sample'}; $('#dropMsg').textContent=''; render(); });
+  const dz=$('#dropZone');
+  ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('hot');}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('hot');}));
+  dz.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
+}
+function bindScroll(){
+  const secs=$$('section[id]'), links=$$('.bar nav a');
+  const on=()=>{
+    const d=document.documentElement;
+    $('#prog').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight||1)*100).toFixed(2)+'%';
+    let cur=secs[0]&&secs[0].id;
+    secs.forEach(s=>{ if(s.getBoundingClientRect().top<=140) cur=s.id; });
+    links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+  };
+  document.addEventListener('scroll',on,{passive:true}); on();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const m=$('#mastImg'); m.src=IMG('photo-1565299624946-b28f40a0ae38',1100); m.onerror=function(){this.style.display='none';};
+  render(); drawParts(); drawThemes(); drawJourney(); bindData(); bindScroll();
+});
+})();
+</script>
+</body>
+</html>
